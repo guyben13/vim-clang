@@ -121,6 +121,13 @@ g:clang_diagsopt                        *g:clang_diagsopt*
     Default: >
         let g:clang_diagsopt = 'rightbelow:6'
 <
+g:clang_debug_diags                     *g:clang_debug_diags*
+        The latest diagnostic string is stored in this global variable.
+        Usefull if you disable the diagnostic window, but still want
+        to see the diagnostic string from time to time.
+        Also useful if you want to do any processing on the diagnostics (e.g.,
+        set the diagnostics as the quickfix, mark error locations etc.)
+<
 g:clang_dotfile                         *g:clang_dotfile*
         Each project can have a dot file at his root, containing the compiler
         options. This is useful if you're using some non-standard include

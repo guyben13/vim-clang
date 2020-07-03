@@ -46,6 +46,10 @@ if !exists('g:clang_debug')
   let g:clang_debug = 0
 endif
 
+if !exists('g:clang_debug_diags')
+  let g:clang_debug_diags = ''
+endif
+
 if !exists('g:clang_diagsopt') || (!empty(g:clang_diagsopt) && g:clang_diagsopt !~# '^[a-z]\+\(:[0-9]\)\?$')
   let g:clang_diagsopt = 'rightbelow:6'
 endif
@@ -349,6 +353,7 @@ endfunc
 " Global variable:
 "   g:clang_diagsopt
 "   g:clang_statusline
+"   g:clang_debug_diags
 " Tab variable
 "   t:clang_diags_bufnr         <= diagnostics window bufnr
 "   t:clang_diags_driver_bufnr  <= the driver buffer number, who opens this window
@@ -357,10 +362,6 @@ endfunc
 " @diags A list of lines from clang diagnostics, or a diagnostics file name.
 " @return -1 or buffer number t:clang_diags_bufnr
 func! s:DiagnosticsWindowOpen(src, diags)
-  if g:clang_diagsopt ==# ''
-    return
-  endif
-
   let l:diags = a:diags
   if type(l:diags) == type('')
     " diagnostics file name
@@ -368,6 +369,21 @@ func! s:DiagnosticsWindowOpen(src, diags)
   elseif type(l:diags) != type([])
     call s:PError("s:DiagnosticsWindowOpen", 'Invalid arg ' . string(l:diags))
     return -1
+  endif
+
+	let g:clang_debug_diags = ''
+  for l:line in l:diags
+    if !empty(g:clang_debug_diags)
+      let g:clang_debug_diags .= "\n"
+    endif
+    " 1. ^<stdin>:
+    " 2. ^In file inlcuded from <stdin>:
+    " So only to replace <stdin>: ?
+    let g:clang_debug_diags .= substitute(l:line, '<stdin>:', a:src . ':', '')
+  endfor
+
+  if g:clang_diagsopt ==# ''
+    return
   endif
 
   let l:i = stridx(g:clang_diagsopt, ':')
