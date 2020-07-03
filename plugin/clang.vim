@@ -1397,7 +1397,7 @@ func! s:ClangComplete(findstart, base)
       " update state machine
       if b:clang_state['state'] == 'ready'
         let b:clang_state['state'] = 'busy'
-        call s:ClangExecute(b:clang_root, b:clang_options, l:line, l:col)
+        call s:ClangExecute(b:clang_root, b:clang_options . ' -w', l:line, l:col)
       elseif b:clang_state['state'] == 'sync'
         let b:clang_state['state'] = 'ready'
       endif
