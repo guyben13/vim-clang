@@ -50,6 +50,10 @@ if !exists('g:clang_debug_diags')
   let g:clang_debug_diags = ''
 endif
 
+if !exists('g:clang_echo_diags')
+	let g:clang_echo_diags = 0
+endif
+
 if !exists('g:clang_diagsopt') || (!empty(g:clang_diagsopt) && g:clang_diagsopt !~# '^[a-z]\+\(:[0-9]\)\?$')
   let g:clang_diagsopt = 'rightbelow:6'
 endif
@@ -354,6 +358,7 @@ endfunc
 "   g:clang_diagsopt
 "   g:clang_statusline
 "   g:clang_debug_diags
+"   g:clang_echo_diags
 " Tab variable
 "   t:clang_diags_bufnr         <= diagnostics window bufnr
 "   t:clang_diags_driver_bufnr  <= the driver buffer number, who opens this window
@@ -381,6 +386,9 @@ func! s:DiagnosticsWindowOpen(src, diags)
     " So only to replace <stdin>: ?
     let g:clang_debug_diags .= substitute(l:line, '<stdin>:', a:src . ':', '')
   endfor
+	if g:clang_echo_diags && !empty(g:clang_debug_diags)
+		echo g:clang_debug_diags
+	endif
 
   if g:clang_diagsopt ==# ''
     return

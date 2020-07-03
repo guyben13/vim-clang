@@ -128,6 +128,13 @@ g:clang_debug_diags                     *g:clang_debug_diags*
         Also useful if you want to do any processing on the diagnostics (e.g.,
         set the diagnostics as the quickfix, mark error locations etc.)
 <
+g:clang_echo_diags                      *g:clang_echo_diags*
+        If set to 1, will echo the diagnostics to the user whenever an error is
+				encountered.
+<
+    Default: >
+        let g:clang_echo_diags = 0
+<
 g:clang_dotfile                         *g:clang_dotfile*
         Each project can have a dot file at his root, containing the compiler
         options. This is useful if you're using some non-standard include
